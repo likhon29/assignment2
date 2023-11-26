@@ -32,6 +32,6 @@ exports.userValidationSchema = zod_1.z.object({
     hobbies: zod_1.z.array(zod_1.z.string()),
     isActive: zod_1.z.boolean(),
     address: userAddressSchema,
-    orders: userOrderSchema.array().optional()
+    orders: zod_1.z.array(userOrderSchema).optional().default([]),
 });
 exports.default = exports.userValidationSchema;

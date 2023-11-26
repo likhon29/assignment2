@@ -92,6 +92,7 @@ userSchema.statics.isUserExists = async function (userId: number) {
 
 // post save middleware / hook
 userSchema.post('save', function (doc, next) {
+    
     doc.password = '';
     next();
 });
