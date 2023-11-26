@@ -113,3 +113,4 @@ export const userServices = {
     getAllOrdersOfUser,
     getTotalPriceOfOrders
 }
+

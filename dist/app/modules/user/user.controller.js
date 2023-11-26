@@ -23,7 +23,16 @@ const createUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         res.status(200).json({
             success: true,
             message: 'User is created succesfully',
-            data: result,
+            data: {
+                userId: result === null || result === void 0 ? void 0 : result.userId,
+                username: result === null || result === void 0 ? void 0 : result.username,
+                fullName: result === null || result === void 0 ? void 0 : result.fullName,
+                age: result === null || result === void 0 ? void 0 : result.age,
+                email: result === null || result === void 0 ? void 0 : result.email,
+                isActive: result === null || result === void 0 ? void 0 : result.isActive,
+                hobbies: result === null || result === void 0 ? void 0 : result.hobbies,
+                address: result === null || result === void 0 ? void 0 : result.address
+            },
         });
     }
     catch (err) {
@@ -69,6 +78,25 @@ const getSingleUser = (req, res) => __awaiter(void 0, void 0, void 0, function* 
         });
     }
 });
+const updateUserInfo = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const userId = Number(req.params.userId);
+        const { user } = req.body;
+        const result = yield user_service_1.userServices.updateUserIntoDB(userId, user);
+        res.status(200).json({
+            success: true,
+            message: 'User updated successfully!',
+            data: result,
+        });
+    }
+    catch (err) {
+        res.status(500).json({
+            success: false,
+            message: err.message || 'Something wrong',
+            error: err,
+        });
+    }
+});
 const deleteUserFromDB = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { userId } = req.params;
@@ -87,9 +115,68 @@ const deleteUserFromDB = (req, res) => __awaiter(void 0, void 0, void 0, functio
         });
     }
 });
+const addProductsToUserOrders = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { order } = req.body;
+        const userId = Number(req.params.userId);
+        yield user_service_1.userServices.addProductsToUserOrders(userId, order);
+        res.status(200).json({
+            success: true,
+            message: 'Order created successfully!',
+            data: null,
+        });
+    }
+    catch (err) {
+        res.status(500).json({
+            success: false,
+            message: err.message || 'Something went wrong',
+            error: err,
+        });
+    }
+});
+const getAllOrdersOfUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { userId } = req.params;
+        const result = yield user_service_1.userServices.getAllOrdersOfUser(Number(userId));
+        res.status(200).json({
+            success: true,
+            message: 'Orders fetched successfully!',
+            data: { orders: result === null || result === void 0 ? void 0 : result.orders },
+        });
+    }
+    catch (err) {
+        res.status(500).json({
+            success: false,
+            message: err.message || 'Something went wrong',
+            error: err,
+        });
+    }
+});
+const getTotalPriceOfOrders = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { userId } = req.params;
+        const result = yield user_service_1.userServices.getTotalPriceOfOrders(Number(userId));
+        res.status(200).json({
+            success: true,
+            message: 'Total price calculated successfully!',
+            data: { totalPrice: result },
+        });
+    }
+    catch (err) {
+        res.status(500).json({
+            success: false,
+            message: err.message || 'Something went wrong',
+            error: err,
+        });
+    }
+});
 exports.UserControllers = {
     createUser,
     getAllUsers,
     getSingleUser,
-    deleteUserFromDB
+    updateUserInfo,
+    deleteUserFromDB,
+    addProductsToUserOrders,
+    getAllOrdersOfUser,
+    getTotalPriceOfOrders,
 };

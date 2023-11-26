@@ -11,7 +11,19 @@ const createUser = async (req: Request, res: Response) => {
         res.status(200).json({
             success: true,
             message: 'User is created succesfully',
-            data: result,
+            data: {
+                userId: result?.userId,
+
+                username: result?.username,
+
+                fullName: result?.fullName,
+                age: result?.age,
+                email: result?.email,
+                isActive: result?.isActive,
+                hobbies: result?.hobbies,
+                address: result?.address
+
+            },
         });
     } catch (err: any) {
         res.status(500).json({
@@ -63,7 +75,7 @@ const getSingleUser = async (req: Request, res: Response) => {
 
 const updateUserInfo = async (req: Request, res: Response) => {
     try {
-        
+
         const userId = Number(req.params.userId);
         const { user } = req.body;
         const result = await userServices.updateUserIntoDB(userId, user);
