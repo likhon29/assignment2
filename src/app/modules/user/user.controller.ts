@@ -4,13 +4,13 @@ import userValidationSchema from "./user.validation";
 
 const createUser = async (req: Request, res: Response) => {
     try {
-        const { user: userData } = req.body;
-        const zodParsedData = userValidationSchema.parse(userData);
+        // const { user: userData } = req.body;
+        const zodParsedData = userValidationSchema.parse(req.body);
         const result = await userServices.createUserIntoDB(zodParsedData);
 
         res.status(200).json({
             success: true,
-            message: 'User is created succesfully',
+            message: 'User created successfully!',
             data: {
                 userId: result?.userId,
 
@@ -41,7 +41,7 @@ const getAllUsers = async (req: Request, res: Response) => {
 
         res.status(200).json({
             success: true,
-            message: 'Users are retrieved succesfully',
+            message: 'Users fetched successfully!',
             data: result,
         });
     } catch (err: any) {
@@ -77,8 +77,8 @@ const updateUserInfo = async (req: Request, res: Response) => {
     try {
 
         const userId = Number(req.params.userId);
-        const { user } = req.body;
-        const result = await userServices.updateUserIntoDB(userId, user);
+
+        const result = await userServices.updateUserIntoDB(userId, req.body);
         res.status(200).json({
             success: true,
             message: 'User updated successfully!',
@@ -114,9 +114,8 @@ const deleteUserFromDB = async (req: Request, res: Response) => {
 };
 const addProductsToUserOrders = async (req: Request, res: Response) => {
     try {
-        const { order } = req.body;
         const userId = Number(req.params.userId);
-        await userServices.addProductsToUserOrders(userId, order);
+        await userServices.addProductsToUserOrders(userId, req.body);
         res.status(200).json({
             success: true,
             message: 'Order created successfully!',
@@ -136,7 +135,7 @@ const getAllOrdersOfUser = async (req: Request, res: Response) => {
         const result = await userServices.getAllOrdersOfUser(Number(userId));
         res.status(200).json({
             success: true,
-            message: 'Orders fetched successfully!',
+            message: 'Order fetched successfully!',
             data: { orders: result?.orders },
         });
     } catch (err: any) {

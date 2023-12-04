@@ -17,12 +17,12 @@ const user_service_1 = require("./user.service");
 const user_validation_1 = __importDefault(require("./user.validation"));
 const createUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { user: userData } = req.body;
-        const zodParsedData = user_validation_1.default.parse(userData);
+        // const { user: userData } = req.body;
+        const zodParsedData = user_validation_1.default.parse(req.body);
         const result = yield user_service_1.userServices.createUserIntoDB(zodParsedData);
         res.status(200).json({
             success: true,
-            message: 'User is created succesfully',
+            message: 'User created successfully!',
             data: {
                 userId: result === null || result === void 0 ? void 0 : result.userId,
                 username: result === null || result === void 0 ? void 0 : result.username,
@@ -48,7 +48,7 @@ const getAllUsers = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         const result = yield user_service_1.userServices.getAllUsersFromDB();
         res.status(200).json({
             success: true,
-            message: 'Users are retrieved succesfully',
+            message: 'Users fetched successfully!',
             data: result,
         });
     }
@@ -81,8 +81,7 @@ const getSingleUser = (req, res) => __awaiter(void 0, void 0, void 0, function* 
 const updateUserInfo = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const userId = Number(req.params.userId);
-        const { user } = req.body;
-        const result = yield user_service_1.userServices.updateUserIntoDB(userId, user);
+        const result = yield user_service_1.userServices.updateUserIntoDB(userId, req.body);
         res.status(200).json({
             success: true,
             message: 'User updated successfully!',
@@ -117,9 +116,8 @@ const deleteUserFromDB = (req, res) => __awaiter(void 0, void 0, void 0, functio
 });
 const addProductsToUserOrders = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { order } = req.body;
         const userId = Number(req.params.userId);
-        yield user_service_1.userServices.addProductsToUserOrders(userId, order);
+        yield user_service_1.userServices.addProductsToUserOrders(userId, req.body);
         res.status(200).json({
             success: true,
             message: 'Order created successfully!',
@@ -140,7 +138,7 @@ const getAllOrdersOfUser = (req, res) => __awaiter(void 0, void 0, void 0, funct
         const result = yield user_service_1.userServices.getAllOrdersOfUser(Number(userId));
         res.status(200).json({
             success: true,
-            message: 'Orders fetched successfully!',
+            message: 'Order fetched successfully!',
             data: { orders: result === null || result === void 0 ? void 0 : result.orders },
         });
     }
